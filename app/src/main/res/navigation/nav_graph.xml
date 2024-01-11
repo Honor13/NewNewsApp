@@ -8,16 +8,21 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.newnewsapi.presentation.ui.detail.DetailsFragment"
-        android:label="fragment_details"
+        android:label="Details"
         tools:layout="@layout/fragment_details" />
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.newnewsapi.presentation.ui.favorite.FavoritesFragment"
-        android:label="fragment_favorites"
+        android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/newsFragment"
         android:name="com.example.newnewsapi.presentation.ui.news.NewsFragment"
-        android:label="fragment_news"
+        android:label="Home"
         tools:layout="@layout/fragment_news" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.newnewsapi.presentation.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
