@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
 import com.example.newnewsapi.data.models.NewsResponse
+import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -95,5 +96,13 @@ class MainViewModel @Inject constructor(
 
             else -> false
         }
+    }
+
+    fun applyQueries(): HashMap<String, String> {
+        val queries: HashMap<String, String> = HashMap()
+        queries[Constants.QUERY_COUNTRY] = Constants.COUNTRY
+        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
+
+        return queries
     }
 }
