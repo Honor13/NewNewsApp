@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
+import com.example.newnewsapi.data.database.Firebase.FirebaseProcessDataSource
 import com.example.newnewsapi.data.models.NewsResponse
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
@@ -21,11 +22,17 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: Repository,
-    application: Application
+    application: Application,
+    private val firebaseProcessDataSource: FirebaseProcessDataSource
 ):AndroidViewModel(application)
 {
     var newsApiResponse: MutableLiveData<NetworkResult<NewsResponse>> = MutableLiveData()
 
+
+    fun  saveFavorites(favId: String?, author: String?, content: String?, description: String?,
+                       publishedAt: String?, title: String?, url: String?, urlToImage: String?){
+        firebaseProcessDataSource.saveFavorites(favId,author,content,description,publishedAt,title,url,urlToImage)
+    }
 
     fun getNews(queries: Map<String, String>) = viewModelScope.launch {
         getNewsSafeCall(queries)
@@ -106,4 +113,6 @@ class MainViewModel @Inject constructor(
 
         return queries
     }
+
+
 }

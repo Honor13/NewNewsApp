@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -62,6 +63,7 @@ dependencies {
 
     //room database
     implementation ("androidx.room:room-runtime:2.6.0")
+    implementation("com.google.firebase:firebase-firestore:24.10.0")
     kapt ("androidx.room:room-compiler:2.6.0")
     implementation ("androidx.room:room-ktx:2.6.0")
     implementation ("com.makeramen:roundedimageview:2.3.0")

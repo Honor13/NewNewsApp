@@ -1,7 +1,11 @@
 package com.example.newnewsapi.di
 
+import com.example.newnewsapi.data.database.Firebase.FirebaseProcessDataSource
 import com.example.newnewsapi.data.network.NewsApi
 import com.example.newnewsapi.util.Constants.Companion.BASE_URL
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +20,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NewtorkModule {
 
+    // Firebase Dependency
+    @Singleton
+    @Provides
+    fun provideRemoteDataSource(collectionFavorites:CollectionReference): FirebaseProcessDataSource {
+        return FirebaseProcessDataSource(collectionFavorites)
+    }
+    @Singleton
+    @Provides
+    fun provideCollectionReference(): CollectionReference {
+        return Firebase.firestore.collection("Favorites")
+    }
+    ////////////////////////////////////////
 
     @Singleton
     @Provides
