@@ -5,4 +5,12 @@
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
     <string name="profile">Profile</string>
+    <string name="categories">CATEGORIES</string>
+    <string name="general">General</string>
+    <string name="science">Science</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="technology">Technology</string>
+    <string name="business">Business</string>
+    <string name="health">Health</string>
+    <string name="sports">Sports</string>
 </resources>

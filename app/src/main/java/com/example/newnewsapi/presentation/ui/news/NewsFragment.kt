@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentNewsBinding
 import com.example.newnewsapi.presentation.ui.adapters.NewsAdapter
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
+import com.example.newnewsapi.presentation.viewmodels.NewsViewModel
 import com.example.newnewsapi.util.Constants.Companion.API_KEY
 import com.example.newnewsapi.util.Constants.Companion.COUNTRY
 import com.example.newnewsapi.util.Constants.Companion.QUERY_API_KEY
@@ -26,9 +29,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class NewsFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var newsViewModel: NewsViewModel
     private lateinit var binding : FragmentNewsBinding
     private val mAdapter by lazy { NewsAdapter() }
-
+//    private val args by navArgs<NewsFragmentArgs>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,6 +41,10 @@ class NewsFragment : Fragment() {
 
         setupRV()
         requesApiData()
+
+        binding.fabCategory.setOnClickListener(){
+            findNavController().navigate(R.id.action_newsFragment_to_newsBottomSheet)
+        }
 
         return binding.root
 
@@ -50,7 +58,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun requesApiData(){
-        mainViewModel.getNews(mainViewModel.applyQueries())
+        mainViewModel.getNews(newsViewModel.applyQueries())
         mainViewModel.newsApiResponse.observe(viewLifecycleOwner){response ->
             when(response) {
 
@@ -76,6 +84,7 @@ class NewsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+        newsViewModel = ViewModelProvider(requireActivity()).get(NewsViewModel::class.java)
 
     }
 

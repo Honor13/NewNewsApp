@@ -1,14 +1,47 @@
 package com.example.newnewsapi.presentation.ui.bindingadapters
 
+import android.util.Log
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.newnewsapi.R
+import com.example.newnewsapi.data.models.Article
+import com.example.newnewsapi.data.models.Source
+import com.example.newnewsapi.presentation.ui.news.NewsFragmentDirections
+import com.example.newnewsapi.presentation.ui.news.bottomsheet.NewsBottomSheetDirections
 
 class NewsRowBinding {
 
     companion object{
 
+        @BindingAdapter("onNewsSetOnCLickListener")
+        @JvmStatic
+        fun onNewsSetOnCLickListener(newsRowLayout: ConstraintLayout, article: Article){
+            newsRowLayout.setOnClickListener{
+                try {
+                    val safeTitle = article.title ?: "Default Title"
+                    val safeContent = article.content ?: "Default Content"
+                    val safeAuthor = article.author ?: "Default Author"
+                    val safeDescription = article.description ?: "No Description"
+                    val safePublishedAt = article.publishedAt ?: "No value Published"
+                    val safeSource:Source = article.source ?: Source("no id value","no name value")
+                    val safeUrl = article.url ?: "No Url"
+                    val safeUrlToImage = article.urlToImage ?: "No Image Url"
+
+                    val safeArticle = Article(safeAuthor,safeContent,safeDescription,safePublishedAt,safeSource,safeTitle,safeUrl,safeUrlToImage)
+
+                    val action = NewsFragmentDirections.actionNewsFragmentToDetailsFragment(safeArticle)
+                        newsRowLayout.findNavController().navigate(action)
+
+                }catch (e: Exception){
+                    Log.e("onNewsSetOnClickListener",e.message.toString())
+                }
+            }
+        }
 
         @BindingAdapter("loadImageFromUrl")
         @JvmStatic

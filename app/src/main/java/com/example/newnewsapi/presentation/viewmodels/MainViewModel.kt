@@ -101,6 +101,7 @@ class MainViewModel @Inject constructor(
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
         queries[Constants.QUERY_COUNTRY] = Constants.COUNTRY
+        queries[Constants.QUERY_CATEGORY] = Constants.DEFAULT_CATEGORY_TYPE
         queries[Constants.QUERY_API_KEY] = Constants.API_KEY
 
         return queries

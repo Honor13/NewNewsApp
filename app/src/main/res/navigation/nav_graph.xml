@@ -9,7 +9,11 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.newnewsapi.presentation.ui.detail.DetailsFragment"
         android:label="Details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="article"
+            app:argType="com.example.newnewsapi.data.models.Article" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.newnewsapi.presentation.ui.favorite.FavoritesFragment"
@@ -19,10 +23,29 @@
         android:id="@+id/newsFragment"
         android:name="com.example.newnewsapi.presentation.ui.news.NewsFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsBottomSheet"
+            app:destination="@id/newsBottomSheet" />
+        <argument
+            android:name="backFromBottomSheet"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_newsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.newnewsapi.presentation.ui.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
+    <dialog
+        android:id="@+id/newsBottomSheet"
+        android:name="com.example.newnewsapi.presentation.ui.news.bottomsheet.NewsBottomSheet"
+        android:label="NewsBottomSheet" >
+        <action
+            android:id="@+id/action_newsBottomSheet_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </dialog>
 </navigation>

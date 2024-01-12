@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
+    <color name="lightGray">#F9F9F9</color>
     <color name="buttonColor">#7077A1</color>
     <color name="lightMediumGray">#80D1D1D1</color>
     <color name="darkGray">#4B4B4B</color>
     <color name="shimmer_color">#C2C2C2</color>
+
+    // Custom Chip Style
+    <color name="checkedChipBackGroundColor">#206200EA</color>
+    <color name="chipBackGroundColor">@color/lightGray</color>
+    <color name="checkedChipTextColor">@color/black</color>
+    <color name="chipTextColor">@color/darkGray</color>
 
 </resources>
