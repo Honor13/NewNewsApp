@@ -5,16 +5,63 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import com.example.newnewsapi.MainActivity
 import com.example.newnewsapi.R
+import com.example.newnewsapi.databinding.FragmentProfileBinding
+import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 
 class ProfileFragment : Fragment() {
 
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var binding: FragmentProfileBinding
+    private lateinit var  view:View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_profile,container,false)
+        binding.profileFragmentObject = this
+        view = binding.progressBarProfile
+
+        mainViewModel.loginFlow.observe(viewLifecycleOwner){
+            if (it==null){
+                hideProgressBar()
+                val mainNavController = (requireActivity() as MainActivity).findNavController(R.id.navHostFragment)
+
+                // popUpTo kullanarak back stack temizleme işlemi
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.newsFragment, true)
+                    .build()
+
+                mainNavController.navigate(R.id.action_profileFragment_to_loginFragment, null, navOptions)
+            }
+            }
+
+
+        return binding.root
+    }
+
+    fun logout(){
+        mainViewModel.logout()
+        showProgressBar()
+    }
+
+    private fun showProgressBar(){
+        binding.progressBarProfile.visibility = View.VISIBLE
+    }
+    private fun hideProgressBar(){
+        binding.progressBarProfile.visibility = View.INVISIBLE
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
 }

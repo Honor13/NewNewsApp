@@ -82,11 +82,11 @@ class LoginFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
-    fun showProgressBar(){
+    private fun showProgressBar(){
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    fun hideProgressBar(){
+    private fun hideProgressBar(){
         binding.progressBar.visibility = View.INVISIBLE
     }
 
