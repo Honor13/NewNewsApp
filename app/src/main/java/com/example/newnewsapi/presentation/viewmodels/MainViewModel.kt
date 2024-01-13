@@ -5,54 +5,103 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
+import com.example.newnewsapi.R
 import com.example.newnewsapi.data.Repository
-import com.example.newnewsapi.data.database.Firebase.FirebaseProcessDataSource
+import com.example.newnewsapi.data.auth.AuthRepository
+import com.example.newnewsapi.data.auth.Resource
 import com.example.newnewsapi.data.models.FavNews
 import com.example.newnewsapi.data.models.NewsResponse
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import javax.inject.Inject
 
-
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: Repository,
-    application: Application,
-    private val collectionFavorites: CollectionReference
-):AndroidViewModel(application)
-{
+    private val collectionFavorites: CollectionReference,
+    private val authRepository: AuthRepository,
+    application: Application
+) : AndroidViewModel(application) {
     var newsApiResponse: MutableLiveData<NetworkResult<NewsResponse>> = MutableLiveData()
 
+    // FIREBASE
+    // Firebase Firestore
+    fun saveFavorites(
+        favId: String?, auth: String?, author: String?, content: String?, description: String?,
+        publishedAt: String?, title: String?, url: String?, urlToImage: String?
+    ) {
 
-    fun saveFavorites(favId: String?, author: String?, content: String?, description: String?,
-                      publishedAt: String?, title: String?, url: String?, urlToImage: String?){
-
-        val newFav = FavNews(favId,author,content,description,publishedAt,title,url,urlToImage)
+        val newFav =
+            FavNews(favId, auth, author, content, description, publishedAt, title, url, urlToImage)
         collectionFavorites.document().set(newFav)
     }
+    //////////////////
+    //Firebase Authentication
 
+    private val _loginFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
+    val loginFlow: LiveData<Resource<FirebaseUser>?> = _loginFlow
+
+    private val _signupFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
+    val signupFlow: LiveData<Resource<FirebaseUser>?> = _signupFlow
+
+    val currentUser: FirebaseUser?
+        get() = authRepository.currentUser
+
+//    init {
+//        if (authRepository.currentUser != null) {
+//            _loginFlow.value = Resource.Success(authRepository.currentUser!!)
+//        }
+//    }
+
+    fun loginUser(email: String, password: String) = viewModelScope.launch {
+        _loginFlow.value = Resource.Loading
+        val result = authRepository.login(email, password)
+        _loginFlow.value = result
+    }
+
+    fun signupUser(name: String, email: String, password: String) = viewModelScope.launch {
+        _signupFlow.value = Resource.Loading
+        val result = authRepository.signup(name, email, password)
+        _signupFlow.value = result
+    }
+
+    fun logout() {
+        authRepository.logout()
+        _loginFlow.value = null
+        _signupFlow.value = null
+    }
+    ////////////////////////
+    //////////////////////////////////////
     fun getNews(queries: Map<String, String>) = viewModelScope.launch {
         getNewsSafeCall(queries)
     }
 
     private suspend fun getNewsSafeCall(queries: Map<String, String>) {
 
-        if (hasInternetConnection()){
+        if (hasInternetConnection()) {
             try {
                 var response = repository.remote.getNews(queries)
                 newsApiResponse.value = handleNewsResponse(response)
 
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 newsApiResponse.value = NetworkResult.Error<NewsResponse>("JsonApi Data Not Found")
                 var str = NetworkResult.Error<NewsResponse>("JsonApi Data Not Found").data
-                Log.e("Dante",str.toString())
+                Log.e("Dante", str.toString())
             }
 
         } else {
@@ -71,21 +120,24 @@ class MainViewModel @Inject constructor(
                 return NetworkResult.Error("Bad Request.")
             }
 
-            response.code() == 500 ->{
+            response.code() == 500 -> {
                 return NetworkResult.Error("Server Error.")
             }
 
-            response.code() == 429 ->{
+            response.code() == 429 -> {
                 return NetworkResult.Error("Set query limit exceeded.")
             }
+
             response.body()?.articles.isNullOrEmpty() -> {
                 return NetworkResult.Error("Not Found.")
             }
+
             response.isSuccessful -> {
                 val jsonApiData = response.body()
                 return NetworkResult.Success(jsonApiData!!)
             }
-            else ->{
+
+            else -> {
                 return NetworkResult.Error(response.message())
             }
 
@@ -100,7 +152,7 @@ class MainViewModel @Inject constructor(
         val activeNetwork = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
 
-        return when{
+        return when {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true

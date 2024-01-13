@@ -6,6 +6,7 @@ import java.io.Serializable
 
 class FavNews (
     val favId: String? ="",
+    val authKey: String? ="",
     val author: String? ="",
     val content: String? ="",
     val description: String? ="",

@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/newsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.newnewsapi.presentation.ui.detail.DetailsFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.detail.DetailsFragment"
         android:label="Details"
         tools:layout="@layout/fragment_details" >
         <argument
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.newnewsapi.presentation.ui.favorite.FavoritesFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.favorite.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.example.newnewsapi.presentation.ui.news.NewsFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.news.NewsFragment"
         android:label="Home"
         tools:layout="@layout/fragment_news" >
         <action
@@ -37,15 +37,35 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.newnewsapi.presentation.ui.profile.ProfileFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile" />
     <dialog
         android:id="@+id/newsBottomSheet"
-        android:name="com.example.newnewsapi.presentation.ui.news.bottomsheet.NewsBottomSheet"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.news.bottomsheet.NewsBottomSheet"
         android:label="NewsBottomSheet" >
         <action
             android:id="@+id/action_newsBottomSheet_to_newsFragment"
             app:destination="@id/newsFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.register.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
+    </fragment>
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.newnewsapi.presentation.ui.profile
+package com.example.newnewsapi.presentation.ui.fragments.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

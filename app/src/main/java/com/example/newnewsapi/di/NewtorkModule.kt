@@ -1,8 +1,10 @@
 package com.example.newnewsapi.di
 
-import com.example.newnewsapi.data.database.Firebase.FirebaseProcessDataSource
+import com.example.newnewsapi.data.auth.AuthRepository
+import com.example.newnewsapi.data.auth.AuthRepositoryImpl
 import com.example.newnewsapi.data.network.NewsApi
 import com.example.newnewsapi.util.Constants.Companion.BASE_URL
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,8 +22,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NewtorkModule {
 
-    // Firebase Dependency
-
+// FIREBASE DEPENDENCY
+   // Firestore
     @Singleton
     @Provides
     fun provideCollectionReference(): CollectionReference {
@@ -29,6 +31,19 @@ object NewtorkModule {
     }
     ////////////////////////////////////////
 
+    // Firebase Authentication
+
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
+    @Provides
+    fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository {
+        return impl
+    }
+    ///////////////////////////////////////
+/////////////////////////////////////////////////////////
     @Singleton
     @Provides
     fun provideHttpClient () : OkHttpClient {

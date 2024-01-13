@@ -1,7 +1,6 @@
-package com.example.newnewsapi.presentation.ui.news
+package com.example.newnewsapi.presentation.ui.fragments.news
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +9,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentNewsBinding
 import com.example.newnewsapi.presentation.ui.adapters.NewsAdapter
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 import com.example.newnewsapi.presentation.viewmodels.NewsViewModel
-import com.example.newnewsapi.util.Constants.Companion.API_KEY
-import com.example.newnewsapi.util.Constants.Companion.COUNTRY
-import com.example.newnewsapi.util.Constants.Companion.QUERY_API_KEY
-import com.example.newnewsapi.util.Constants.Companion.QUERY_COUNTRY
 import com.example.newnewsapi.util.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 

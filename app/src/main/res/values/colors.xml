@@ -8,6 +8,9 @@
     <color name="lightMediumGray">#80D1D1D1</color>
     <color name="darkGray">#4B4B4B</color>
     <color name="shimmer_color">#C2C2C2</color>
+    <color name="clikableTextColorBlue">#103DC6</color>
+    <color name="clikableTextColorRed">#D62C2C</color>
+
 
     // Custom Chip Style
     <color name="checkedChipBackGroundColor">#206200EA</color>

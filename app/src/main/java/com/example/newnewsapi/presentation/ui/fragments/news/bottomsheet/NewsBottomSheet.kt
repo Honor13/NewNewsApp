@@ -1,4 +1,4 @@
-package com.example.newnewsapi.presentation.ui.news.bottomsheet
+package com.example.newnewsapi.presentation.ui.fragments.news.bottomsheet
 
 import android.os.Bundle
 import android.util.Log
@@ -23,7 +23,6 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding:FragmentNewsBottomSheetBinding
     private lateinit var newsViewModel: NewsViewModel
 
-
     private var categoryTypeChip = DEFAULT_CATEGORY_TYPE
     private var categoryTypeChipId = 0
     override fun onCreateView(
@@ -36,7 +35,6 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
             categoryTypeChip = value.selectedCategoryType
             updateChip(value.selectedCategoryTypeId,binding.chipGroup)
         }
-
 
         binding.chipGroup.setOnCheckedChangeListener{group, selectedChipId ->
             val chip = group.findViewById<Chip>(selectedChipId)
@@ -51,7 +49,8 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
                 categoryTypeChipId
             )
 
-            val action = NewsBottomSheetDirections.actionNewsBottomSheetToNewsFragment().apply {
+            val action = NewsBottomSheetDirections.actionNewsBottomSheetToNewsFragment()
+                .apply {
                 setBackFromBottomSheet(true)
             }
             findNavController().navigate(action)
@@ -65,7 +64,6 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun updateChip(chipId: Int, chipGroup: ChipGroup) {
-
 
         if (chipId != 0){
             try {

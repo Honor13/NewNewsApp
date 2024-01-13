@@ -6,13 +6,13 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+
 import coil.load
 import com.example.newnewsapi.R
 import com.example.newnewsapi.data.models.Article
 import com.example.newnewsapi.data.models.Source
-import com.example.newnewsapi.presentation.ui.news.NewsFragmentDirections
-import com.example.newnewsapi.presentation.ui.news.bottomsheet.NewsBottomSheetDirections
+import com.example.newnewsapi.presentation.ui.fragments.news.NewsFragmentDirections
+
 
 class NewsRowBinding {
 

@@ -1,4 +1,4 @@
-package com.example.newnewsapi.presentation.ui.detail
+package com.example.newnewsapi.presentation.ui.fragments.detail
 
 import android.os.Bundle
 import android.util.Log
@@ -12,25 +12,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentDetailsBinding
-import com.example.newnewsapi.presentation.ui.news.NewsFragmentArgs
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 
 class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var authKey: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_details, container, false)
-
-        val bundle: DetailsFragmentArgs by navArgs()
+        authKey = "AuthKey"
+        val bundle:DetailsFragmentArgs by navArgs()
         val news = bundle.article
         binding.article = news
 
         binding.imageViewFav.setOnClickListener{
-            mainViewModel.saveFavorites("",news.author,news.content,news.description,news.publishedAt,news.title,news.url,news.urlToImage)
+            mainViewModel.saveFavorites("",authKey,news.author,news.content,news.description,news.publishedAt,news.title,news.url,news.urlToImage)
             Toast.makeText(requireContext(),"Eklendi",Toast.LENGTH_SHORT).show()
         }
 
