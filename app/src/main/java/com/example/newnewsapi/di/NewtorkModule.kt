@@ -21,11 +21,7 @@ import javax.inject.Singleton
 object NewtorkModule {
 
     // Firebase Dependency
-    @Singleton
-    @Provides
-    fun provideRemoteDataSource(collectionFavorites:CollectionReference): FirebaseProcessDataSource {
-        return FirebaseProcessDataSource(collectionFavorites)
-    }
+
     @Singleton
     @Provides
     fun provideCollectionReference(): CollectionReference {

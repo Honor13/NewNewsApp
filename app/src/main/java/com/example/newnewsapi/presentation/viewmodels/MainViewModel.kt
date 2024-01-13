@@ -10,9 +10,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
 import com.example.newnewsapi.data.database.Firebase.FirebaseProcessDataSource
+import com.example.newnewsapi.data.models.FavNews
 import com.example.newnewsapi.data.models.NewsResponse
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
+import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -23,15 +25,17 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: Repository,
     application: Application,
-    private val firebaseProcessDataSource: FirebaseProcessDataSource
+    private val collectionFavorites: CollectionReference
 ):AndroidViewModel(application)
 {
     var newsApiResponse: MutableLiveData<NetworkResult<NewsResponse>> = MutableLiveData()
 
 
-    fun  saveFavorites(favId: String?, author: String?, content: String?, description: String?,
-                       publishedAt: String?, title: String?, url: String?, urlToImage: String?){
-        firebaseProcessDataSource.saveFavorites(favId,author,content,description,publishedAt,title,url,urlToImage)
+    fun saveFavorites(favId: String?, author: String?, content: String?, description: String?,
+                      publishedAt: String?, title: String?, url: String?, urlToImage: String?){
+
+        val newFav = FavNews(favId,author,content,description,publishedAt,title,url,urlToImage)
+        collectionFavorites.document().set(newFav)
     }
 
     fun getNews(queries: Map<String, String>) = viewModelScope.launch {
