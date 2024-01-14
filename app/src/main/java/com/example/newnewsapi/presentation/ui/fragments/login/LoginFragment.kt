@@ -57,7 +57,7 @@ class LoginFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     hideProgressBar()
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_newsFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_bottomNavHolderFragment)
                 }
                 null -> {
 

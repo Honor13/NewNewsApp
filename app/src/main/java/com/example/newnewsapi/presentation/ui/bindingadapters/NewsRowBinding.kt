@@ -11,7 +11,8 @@ import coil.load
 import com.example.newnewsapi.R
 import com.example.newnewsapi.data.models.Article
 import com.example.newnewsapi.data.models.Source
-import com.example.newnewsapi.presentation.ui.fragments.news.NewsFragmentDirections
+import com.example.newnewsapi.presentation.ui.fragments.bottomnavholder.BottomNavHolderFragmentDirections
+
 
 
 class NewsRowBinding {
@@ -34,8 +35,10 @@ class NewsRowBinding {
 
                     val safeArticle = Article(safeAuthor,safeContent,safeDescription,safePublishedAt,safeSource,safeTitle,safeUrl,safeUrlToImage)
 
-                    val action = NewsFragmentDirections.actionNewsFragmentToDetailsFragment(safeArticle)
-                        newsRowLayout.findNavController().navigate(action)
+                    val action = BottomNavHolderFragmentDirections.actionBottomNavHolderFragmentToDetailsFragment(safeArticle)
+                    newsRowLayout.findNavController().navigate(action)
+//                    val action = NewsFragmentDirections.actionNewsFragmentToDetailsFragment(safeArticle)
+//                        newsRowLayout.findNavController().navigate(action)
 
                 }catch (e: Exception){
                     Log.e("onNewsSetOnClickListener",e.message.toString())

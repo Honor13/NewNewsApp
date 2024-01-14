@@ -19,16 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
 
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-        NavigationUI.setupWithNavController(binding.bottomNav, navHostFragment.navController)
-
-        binding.toolbar.setupWithNavController(navHostFragment.navController, AppBarConfiguration(
-            setOf(R.id.newsFragment,R.id.favoritesFragment,R.id.profileFragment)
-        ))
-
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navHostFragment.navController.navigateUp() || super.onSupportNavigateUp()
-    }
+
 }

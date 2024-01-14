@@ -49,7 +49,7 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
                 categoryTypeChipId
             )
 
-            val action = NewsBottomSheetDirections.actionNewsBottomSheetToNewsFragment()
+            val action = NewsBottomSheetDirections.actionNewsBottomSheetToBottomNavHolderFragment()
                 .apply {
                 setBackFromBottomSheet(true)
             }

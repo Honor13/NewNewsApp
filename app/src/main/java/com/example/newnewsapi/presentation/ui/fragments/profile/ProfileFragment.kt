@@ -36,10 +36,10 @@ class ProfileFragment : Fragment() {
 
                 // popUpTo kullanarak back stack temizleme işlemi
                 val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.newsFragment, true)
+                    .setPopUpTo(R.id.bottomNavHolderFragment, true)
                     .build()
 
-                mainNavController.navigate(R.id.action_profileFragment_to_loginFragment, null, navOptions)
+                mainNavController.navigate(R.id.action_bottomNavHolderFragment_to_loginFragment, null, navOptions)
             }
             }
 

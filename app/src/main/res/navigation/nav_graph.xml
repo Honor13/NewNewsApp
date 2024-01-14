@@ -20,37 +20,17 @@
         android:label="Favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
-        android:id="@+id/newsFragment"
-        android:name="com.example.newnewsapi.presentation.ui.fragments.news.NewsFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_news" >
-        <action
-            android:id="@+id/action_newsFragment_to_newsBottomSheet"
-            app:destination="@id/newsBottomSheet" />
-        <argument
-            android:name="backFromBottomSheet"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <action
-            android:id="@+id/action_newsFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.newnewsapi.presentation.ui.fragments.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_profile" />
     <dialog
         android:id="@+id/newsBottomSheet"
         android:name="com.example.newnewsapi.presentation.ui.fragments.news.bottomsheet.NewsBottomSheet"
         android:label="NewsBottomSheet" >
         <action
-            android:id="@+id/action_newsBottomSheet_to_newsFragment"
-            app:destination="@id/newsFragment" />
+            android:id="@+id/action_newsBottomSheet_to_bottomNavHolderFragment"
+            app:destination="@id/bottomNavHolderFragment" />
     </dialog>
     <fragment
         android:id="@+id/loginFragment"
@@ -60,8 +40,8 @@
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_newsFragment"
-            app:destination="@id/newsFragment" />
+            android:id="@+id/action_loginFragment_to_bottomNavHolderFragment"
+            app:destination="@id/bottomNavHolderFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -69,7 +49,25 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_newsFragment"
-            app:destination="@id/newsFragment" />
+            android:id="@+id/action_registerFragment_to_bottomNavHolderFragment"
+            app:destination="@id/bottomNavHolderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottomNavHolderFragment"
+        android:name="com.example.newnewsapi.presentation.ui.fragments.bottomnavholder.BottomNavHolderFragment"
+        android:label="BottomNavHolderFragment" >
+        <action
+            android:id="@+id/action_bottomNavHolderFragment_to_newsBottomSheet"
+            app:destination="@id/newsBottomSheet" />
+        <argument
+            android:name="backFromBottomSheet"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <action
+            android:id="@+id/action_bottomNavHolderFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_bottomNavHolderFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 </navigation>

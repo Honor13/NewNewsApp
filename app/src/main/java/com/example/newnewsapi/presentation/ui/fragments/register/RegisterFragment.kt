@@ -40,7 +40,7 @@ class RegisterFragment : Fragment() {
                     showProgressBar()
                 }
                 is Resource.Success -> {
-                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_newsFragment)
+                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_bottomNavHolderFragment)
                 }
                 null -> {
 

@@ -37,7 +37,7 @@ class NewsFragment : Fragment() {
         requesApiData()
 
         binding.fabCategory.setOnClickListener(){
-            findNavController().navigate(R.id.action_newsFragment_to_newsBottomSheet)
+            findNavController().navigate(R.id.action_bottomNavHolderFragment_to_newsBottomSheet)
         }
 
         return binding.root
