@@ -7,6 +7,10 @@
             <variable
                 name="article"
                 type="com.example.newnewsapi.data.models.Article" />
+            <variable
+                name="favoriteState"
+                type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,10 +20,10 @@
 
         <ImageView
             android:id="@+id/main_imageView"
+            loadImageFromUrl="@{article.urlToImage}"
             android:layout_width="0dp"
             android:layout_height="250dp"
             android:scaleType="centerCrop"
-            loadImageFromUrl="@{article.urlToImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,6 +59,7 @@
 
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="12dp"
@@ -82,12 +87,26 @@
 
         <ImageView
             android:id="@+id/imageViewFav"
+            applyFavoriteColor="@{favoriteState}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_unfill_fav"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBarDetail"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:background = "@drawable/progressbar_color"
+            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/scrollView2"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

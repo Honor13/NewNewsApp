@@ -20,42 +20,49 @@ class ProfileFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var  view:View
+    private lateinit var view: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_profile,container,false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_profile, container, false)
         binding.profileFragmentObject = this
         view = binding.progressBarProfile
 
-        mainViewModel.loginFlow.observe(viewLifecycleOwner){
-            if (it==null){
+        mainViewModel.loginFlow.observe(viewLifecycleOwner) {
+            if (it == null) {
                 hideProgressBar()
-                val mainNavController = (requireActivity() as MainActivity).findNavController(R.id.navHostFragment)
+                val mainNavController =
+                    (requireActivity() as MainActivity).findNavController(R.id.navHostFragment)
 
                 // popUpTo kullanarak back stack temizleme işlemi
                 val navOptions = NavOptions.Builder()
                     .setPopUpTo(R.id.bottomNavHolderFragment, true)
                     .build()
 
-                mainNavController.navigate(R.id.action_bottomNavHolderFragment_to_loginFragment, null, navOptions)
+                mainNavController.navigate(
+                    R.id.action_bottomNavHolderFragment_to_loginFragment,
+                    null,
+                    navOptions
+                )
             }
-            }
+        }
 
 
         return binding.root
     }
 
-    fun logout(){
+    fun logout() {
         mainViewModel.logout()
         showProgressBar()
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding.progressBarProfile.visibility = View.VISIBLE
     }
-    private fun hideProgressBar(){
+
+    private fun hideProgressBar() {
         binding.progressBarProfile.visibility = View.INVISIBLE
     }
 

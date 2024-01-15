@@ -21,17 +21,21 @@ import com.example.newnewsapi.presentation.ui.fragments.profile.ProfileFragment
 class BottomNavHolderFragment : Fragment() {
 
     private lateinit var binding: FragmentBottomNavHolderBinding
-    private lateinit var navHostFragment: NavHostFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_bottom_nav_holder, container, false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_bottom_nav_holder,
+            container,
+            false
+        )
 
 
-        binding.bottomNav.setOnItemSelectedListener {item ->
+        binding.bottomNav.setOnItemSelectedListener { item ->
 
-            when(item.itemId){
+            when (item.itemId) {
                 R.id.action_home -> openFragment(NewsFragment())
                 R.id.action_fav -> openFragment(FavoritesFragment())
                 R.id.action_profile -> openFragment(ProfileFragment())
@@ -43,9 +47,9 @@ class BottomNavHolderFragment : Fragment() {
         return binding.root
     }
 
-    private fun openFragment(fragment:Fragment){
-        val fragmentTransaction : FragmentTransaction = childFragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.navHostFragment,fragment)
+    private fun openFragment(fragment: Fragment) {
+        val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.navHostFragment, fragment)
         fragmentTransaction.commit()
     }
 }

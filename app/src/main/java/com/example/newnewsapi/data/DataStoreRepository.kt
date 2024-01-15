@@ -21,17 +21,16 @@ import javax.inject.Inject
 
 
 @ActivityRetainedScoped
-class DataStoreRepository @Inject constructor(@ApplicationContext private val  context: Context)
-{
+class DataStoreRepository @Inject constructor(@ApplicationContext private val context: Context) {
 
     private object PreferencesKeys {
-        val selectedCategories= stringPreferencesKey(PREFERENCES_CATEGORY)
+        val selectedCategories = stringPreferencesKey(PREFERENCES_CATEGORY)
         val selectedCategoriesId = intPreferencesKey(PREFERENCES_CATEGORY_ID)
     }
 
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCES_NAME)
 
-    suspend fun saveCategory(categoryType: String,categoryTypeId: Int){
+    suspend fun saveCategory(categoryType: String, categoryTypeId: Int) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.selectedCategories] = categoryType
             preferences[PreferencesKeys.selectedCategoriesId] = categoryTypeId
@@ -40,22 +39,23 @@ class DataStoreRepository @Inject constructor(@ApplicationContext private val  c
     }
 
     val readCategoryType: kotlinx.coroutines.flow.Flow<CategoryType> = context.dataStore.data
-        .catch {exception->
+        .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
-            }else {
+            } else {
                 throw exception
             }
         }
         .map { preferences ->
-            val selectedCategoryType = preferences[PreferencesKeys.selectedCategories] ?: DEFAULT_CATEGORY_TYPE
+            val selectedCategoryType =
+                preferences[PreferencesKeys.selectedCategories] ?: DEFAULT_CATEGORY_TYPE
             val selectedCategoryTypeId = preferences[PreferencesKeys.selectedCategoriesId] ?: 0
 
             CategoryType(
                 selectedCategoryType,
                 selectedCategoryTypeId,
 
-            )
+                )
         }
 }
 
@@ -64,4 +64,4 @@ data class CategoryType(
     val selectedCategoryType: String,
     val selectedCategoryTypeId: Int,
 
-)
+    )

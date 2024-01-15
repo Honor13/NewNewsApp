@@ -9,9 +9,9 @@ import javax.inject.Inject
 class RemoteDataSource @Inject constructor(
     private val newsApi: NewsApi,
 
-) {
+    ) {
 
-    suspend fun getNews(queries: Map<String, String>):Response<NewsResponse> {
+    suspend fun getNews(queries: Map<String, String>): Response<NewsResponse> {
         return newsApi.getNews(queries)
     }
 

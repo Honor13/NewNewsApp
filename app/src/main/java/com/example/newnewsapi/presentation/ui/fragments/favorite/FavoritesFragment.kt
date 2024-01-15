@@ -5,18 +5,61 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newnewsapi.R
+import com.example.newnewsapi.databinding.FragmentFavoritesBinding
+import com.example.newnewsapi.presentation.ui.adapters.FavoritesAdapter
+import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 
 
 class FavoritesFragment : Fragment() {
 
-
+    private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var mainViewModel: MainViewModel
+    private val mAdapter by lazy { FavoritesAdapter(mainViewModel) }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_favorites, container, false)
+
+        showShimmer()
+        setupRV()
+        mainViewModel.loadFavorites()
+        mainViewModel.listFav.observe(viewLifecycleOwner) {
+            mAdapter.setData(it)
+            hideShimmer()
+        }
+
+
+        return binding.root
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
+
+    private fun setupRV() {
+        binding.recyclerViewFavorites.adapter = mAdapter
+        binding.recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
+        showShimmer()
+    }
+
+    private fun showShimmer() {
+        binding.shimmerRVFavorites.visibility = View.VISIBLE
+        binding.recyclerViewFavorites.visibility = View.INVISIBLE
+        binding.shimmerRVFavorites.showShimmer(true)
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerRVFavorites.visibility = View.INVISIBLE
+        binding.recyclerViewFavorites.visibility = View.VISIBLE
+        binding.shimmerRVFavorites.hideShimmer()
     }
 
 }

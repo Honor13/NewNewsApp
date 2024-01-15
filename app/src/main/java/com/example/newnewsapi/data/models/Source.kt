@@ -12,4 +12,4 @@ data class Source(
     @SerializedName("name")
     @Expose
     val name: String?
-):Serializable
+) : Serializable

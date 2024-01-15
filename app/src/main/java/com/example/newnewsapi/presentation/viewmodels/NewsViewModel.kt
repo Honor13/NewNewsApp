@@ -13,7 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NewsViewModel @Inject constructor(application: Application, private val dataStoreRepository: DataStoreRepository) : AndroidViewModel(application) {
+class NewsViewModel @Inject constructor(
+    application: Application,
+    private val dataStoreRepository: DataStoreRepository
+) : AndroidViewModel(application) {
 
     private var categoryType = DEFAULT_CATEGORY_TYPE
 
@@ -22,13 +25,13 @@ class NewsViewModel @Inject constructor(application: Application, private val da
 
     fun saveCategory(categoryType: String, categoryTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            dataStoreRepository.saveCategory(categoryType,categoryTypeId)
+            dataStoreRepository.saveCategory(categoryType, categoryTypeId)
         }
 
-    fun applyQueries(): HashMap<String,String>{
+    fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()
         viewModelScope.launch {
-            readCategoryType.collect {value->
+            readCategoryType.collect { value ->
                 categoryType = value.selectedCategoryType
 
             }

@@ -31,41 +31,46 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var view:View
-
-
-
+    private lateinit var view: View
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_login,container,false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_login, container, false)
         binding.loginFragmentObject = this
         view = binding.buttonLogin
 
 
-        mainViewModel.loginFlow.observe(viewLifecycleOwner){
-            when(it){
+        mainViewModel.loginFlow.observe(viewLifecycleOwner) {
+            when (it) {
                 is Resource.Failure -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),it.exception.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        it.exception.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
                 Resource.Loading -> {
                     showProgressBar()
                 }
+
                 is Resource.Success -> {
                     hideProgressBar()
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_bottomNavHolderFragment)
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_loginFragment_to_bottomNavHolderFragment)
                 }
+
                 null -> {
 
                 }
             }
         }
 
-        binding.textRegister.setOnClickListener{
+        binding.textRegister.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
@@ -73,8 +78,8 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    fun login(email: String, password: String){
-        mainViewModel.loginUser(email,password)
+    fun login(email: String, password: String) {
+        mainViewModel.loginUser(email, password)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,11 +87,11 @@ class LoginFragment : Fragment() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgressBar(){
+    private fun hideProgressBar() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 

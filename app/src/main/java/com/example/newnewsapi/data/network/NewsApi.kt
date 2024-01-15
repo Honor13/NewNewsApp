@@ -9,5 +9,6 @@ interface NewsApi {
 
     @GET("top-headlines")
     suspend fun getNews(
-        @QueryMap queries: Map<String, String>):Response<NewsResponse>
+        @QueryMap queries: Map<String, String>
+    ): Response<NewsResponse>
 }

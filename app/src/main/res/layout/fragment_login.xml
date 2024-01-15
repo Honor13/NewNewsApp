@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Email"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -116,8 +116,9 @@
                 android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Password"
-                android:textSize="24sp" />
+                android:password="true"
+                android:hint="@string/enter_password"
+                android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ProgressBar

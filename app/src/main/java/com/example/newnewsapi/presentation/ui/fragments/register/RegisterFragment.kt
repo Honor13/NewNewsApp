@@ -26,22 +26,31 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_register,container,false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_register, container, false)
         binding.registerFragmentObject = this
         view = binding.buttonSignUp
 
-        mainViewModel.signupFlow.observe(viewLifecycleOwner){
-            when(it){
+        mainViewModel.signupFlow.observe(viewLifecycleOwner) {
+            when (it) {
                 is Resource.Failure -> {
                     hideProgressBar()
-                    Toast.makeText(requireContext(),it.exception.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        it.exception.message.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
                 Resource.Loading -> {
                     showProgressBar()
                 }
+
                 is Resource.Success -> {
-                    Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_bottomNavHolderFragment)
+                    Navigation.findNavController(view)
+                        .navigate(R.id.action_registerFragment_to_bottomNavHolderFragment)
                 }
+
                 null -> {
 
                 }
@@ -59,26 +68,25 @@ class RegisterFragment : Fragment() {
 
     }
 
-    fun signUp(username: String, email: String, password1: String, password2: String){
+    fun signUp(username: String, email: String, password1: String, password2: String) {
         showProgressBar()
         if (password1 == password2)
-            mainViewModel.signupUser(username,email,password1)
-        else{
-            Toast.makeText(requireContext(),"Passwords do not match",Toast.LENGTH_SHORT).show()
+            mainViewModel.signupUser(username, email, password1)
+        else {
+            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
             hideProgressBar()
         }
 
 
     }
 
-    private fun showProgressBar(){
+    private fun showProgressBar() {
         binding.progressBarRegisterScreen.visibility = View.VISIBLE
     }
-    private fun hideProgressBar(){
+
+    private fun hideProgressBar() {
         binding.progressBarRegisterScreen.visibility = View.INVISIBLE
     }
-
-
 
 
 }

@@ -20,7 +20,7 @@ import java.util.Locale
 
 class NewsBottomSheet : BottomSheetDialogFragment() {
 
-    private lateinit var binding:FragmentNewsBottomSheetBinding
+    private lateinit var binding: FragmentNewsBottomSheetBinding
     private lateinit var newsViewModel: NewsViewModel
 
     private var categoryTypeChip = DEFAULT_CATEGORY_TYPE
@@ -29,14 +29,19 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater,R.layout.fragment_news_bottom_sheet,container,false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_news_bottom_sheet,
+            container,
+            false
+        )
 
-        newsViewModel.readCategoryType.asLiveData().observe(viewLifecycleOwner) {value ->
+        newsViewModel.readCategoryType.asLiveData().observe(viewLifecycleOwner) { value ->
             categoryTypeChip = value.selectedCategoryType
-            updateChip(value.selectedCategoryTypeId,binding.chipGroup)
+            updateChip(value.selectedCategoryTypeId, binding.chipGroup)
         }
 
-        binding.chipGroup.setOnCheckedChangeListener{group, selectedChipId ->
+        binding.chipGroup.setOnCheckedChangeListener { group, selectedChipId ->
             val chip = group.findViewById<Chip>(selectedChipId)
             val selectedCategoryType = chip.text.toString().lowercase(Locale.ROOT)
             categoryTypeChip = selectedCategoryType
@@ -51,8 +56,8 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
 
             val action = NewsBottomSheetDirections.actionNewsBottomSheetToBottomNavHolderFragment()
                 .apply {
-                setBackFromBottomSheet(true)
-            }
+                    setBackFromBottomSheet(true)
+                }
             findNavController().navigate(action)
         }
         return binding.root
@@ -65,12 +70,12 @@ class NewsBottomSheet : BottomSheetDialogFragment() {
 
     private fun updateChip(chipId: Int, chipGroup: ChipGroup) {
 
-        if (chipId != 0){
+        if (chipId != 0) {
             try {
                 chipGroup.findViewById<Chip>(chipId).isChecked = true
-                Log.e("dasdsad","asfasfasf")
-            }catch (e: Exception){
-                Log.d("BottomSheet",e.message.toString())
+                Log.e("dasdsad", "asfasfasf")
+            } catch (e: Exception) {
+                Log.d("BottomSheet", e.message.toString())
             }
         }
 

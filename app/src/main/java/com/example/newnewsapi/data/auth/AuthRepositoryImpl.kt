@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
-): AuthRepository {
+) : AuthRepository {
     override val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
@@ -29,7 +29,9 @@ class AuthRepositoryImpl @Inject constructor(
     ): Resource<FirebaseUser> {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            result.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.await()
+            result.user?.updateProfile(
+                UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            )?.await()
             return Resource.Success(result.user!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -39,6 +41,6 @@ class AuthRepositoryImpl @Inject constructor(
 
 
     override fun logout() {
-       firebaseAuth.signOut()
+        firebaseAuth.signOut()
     }
 }

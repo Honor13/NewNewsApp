@@ -9,10 +9,12 @@ import com.example.newnewsapi.data.models.NewsResponse
 import com.example.newnewsapi.databinding.NewsRowLayoutBinding
 import com.example.newnewsapi.util.NewsDiffUtil
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>(){
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>() {
 
     private var news = emptyList<Article>()
-    class MyViewHolder(private val binding: NewsRowLayoutBinding):RecyclerView.ViewHolder(binding.root) {
+
+    class MyViewHolder(private val binding: NewsRowLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
 
         fun bind(article: Article) {
@@ -21,9 +23,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.MyViewHolder>(){
         }
 
         companion object {
-            fun from(parent: ViewGroup):MyViewHolder {
+            fun from(parent: ViewGroup): MyViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = NewsRowLayoutBinding.inflate(layoutInflater,parent,false)
+                val binding = NewsRowLayoutBinding.inflate(layoutInflater, parent, false)
                 return MyViewHolder(binding)
             }
         }

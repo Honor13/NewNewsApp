@@ -22,8 +22,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NewtorkModule {
 
-// FIREBASE DEPENDENCY
-   // Firestore
+    // FIREBASE DEPENDENCY
+    // Firestore
     @Singleton
     @Provides
     fun provideCollectionReference(): CollectionReference {
@@ -42,11 +42,12 @@ object NewtorkModule {
     fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository {
         return impl
     }
+
     ///////////////////////////////////////
 /////////////////////////////////////////////////////////
     @Singleton
     @Provides
-    fun provideHttpClient () : OkHttpClient {
+    fun provideHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(15, TimeUnit.SECONDS)
             .connectTimeout(15, TimeUnit.SECONDS)
@@ -55,8 +56,8 @@ object NewtorkModule {
 
     @Singleton
     @Provides
-    fun provideConverterFactory() : GsonConverterFactory {
-        return  GsonConverterFactory.create()
+    fun provideConverterFactory(): GsonConverterFactory {
+        return GsonConverterFactory.create()
     }
 
     @Singleton
@@ -74,7 +75,7 @@ object NewtorkModule {
 
     @Singleton
     @Provides
-    fun provideApiService(retrofit: Retrofit) : NewsApi {
+    fun provideApiService(retrofit: Retrofit): NewsApi {
         return retrofit.create(NewsApi::class.java)
     }
 }
