@@ -37,7 +37,7 @@ class MainViewModel @Inject constructor(
     var listFav = MutableLiveData<List<FavNews>>()
     var hidePrgorressBar = MutableLiveData<Boolean>(false)
     val authKey = authRepository.currentUser?.uid
-    var favState: Boolean = false
+    var favState = MutableLiveData<Boolean>(false)
 
     // FIREBASE
     // Firebase Firestore
@@ -116,19 +116,17 @@ class MainViewModel @Inject constructor(
         hidePrgorressBar.value = false
     }
 
-    fun checkFavorites(title: String): Boolean {
+    fun checkFavorites(title: String) {
         collectionFavorites.whereEqualTo("title", title).get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.isEmpty) {
-                    favState = false
-
+                    favState.value = false
                 } else {
-                    favState = true
-
+                    favState.value = true
                 }
 
             }
-        return favState
+
     }
 
     fun loadFavorites(): MutableLiveData<List<FavNews>> {
@@ -151,14 +149,23 @@ class MainViewModel @Inject constructor(
     }
 
     fun deleteFavorites(favId: String, view: View) {
-        val task = collectionFavorites.document(favId)
-        task.delete().addOnSuccessListener {
-            Snackbar.make(
-                view, "Deleted", Snackbar.LENGTH_SHORT
-            ).setBackgroundTint(Color.RED).setTextColor(Color.BLACK).show()
-        }.addOnFailureListener {
-            Log.e("Dante", "could not be Deleted")
-        }
+
+        Snackbar.make(view, "Are you sure you want to delete it?", Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(Color.GRAY)
+            .setTextColor(Color.BLUE)
+            .setActionTextColor(Color.RED)
+            .setAction("EVET") {
+                val task = collectionFavorites.document(favId)
+                task.delete().addOnSuccessListener {
+                    Snackbar.make(
+                        view, "Deleted", Snackbar.LENGTH_SHORT
+                    ).setBackgroundTint(Color.RED).setTextColor(Color.BLACK).show()
+                }.addOnFailureListener {
+                    Log.e("Dante", "could not be Deleted")
+                }
+            }.show()
+
+
     }
 
     //////////////////
@@ -172,12 +179,6 @@ class MainViewModel @Inject constructor(
 
     val currentUser: FirebaseUser?
         get() = authRepository.currentUser
-
-//    init {
-//        if (authRepository.currentUser != null) {
-//            _loginFlow.value = Resource.Success(authRepository.currentUser!!)
-//        }
-//    }
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
         _loginFlow.value = Resource.Loading
@@ -207,12 +208,12 @@ class MainViewModel @Inject constructor(
 
         if (hasInternetConnection()) {
             try {
-                var response = repository.remote.getNews(queries)
+                val response = repository.remote.getNews(queries)
                 newsApiResponse.value = handleNewsResponse(response)
 
             } catch (e: Exception) {
                 newsApiResponse.value = NetworkResult.Error<NewsResponse>("JsonApi Data Not Found")
-                var str = NetworkResult.Error<NewsResponse>("JsonApi Data Not Found").data
+                val str = NetworkResult.Error<NewsResponse>("JsonApi Data Not Found").data
                 Log.e("Dante", str.toString())
             }
 
@@ -271,6 +272,15 @@ class MainViewModel @Inject constructor(
 
             else -> false
         }
+    }
+
+    fun applyQueries(): HashMap<String, String> {
+        val queries: HashMap<String, String> = HashMap()
+        queries[Constants.QUERY_COUNTRY] = Constants.COUNTRY
+        queries[Constants.QUERY_CATEGORY] = Constants.DEFAULT_CATEGORY_TYPE
+        queries[Constants.QUERY_API_KEY] = Constants.API_KEY
+
+        return queries
     }
 
 

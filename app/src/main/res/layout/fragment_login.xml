@@ -126,6 +126,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background = "@drawable/progressbar_color"
             android:layout_marginBottom="335dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

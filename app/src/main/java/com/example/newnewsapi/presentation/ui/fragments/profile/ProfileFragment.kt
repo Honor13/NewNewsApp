@@ -63,7 +63,7 @@ class ProfileFragment : Fragment() {
             .setAction("EVET") {
                 showProgressBar()
                 mainViewModel.logout()
-            }
+            }.show()
 
     }
 

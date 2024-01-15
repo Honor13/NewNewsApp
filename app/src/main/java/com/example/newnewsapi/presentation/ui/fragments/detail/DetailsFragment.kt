@@ -22,7 +22,7 @@ class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var authKey: String
-    private var favSt: Boolean? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +35,17 @@ class DetailsFragment : Fragment() {
 
         val bundle: DetailsFragmentArgs by navArgs()
         val news = bundle.article
-
+        mainViewModel.checkFavorites(news.title.toString())
         binding.article = news
-        GlobalScope.launch {
-            favSt = mainViewModel.checkFavorites(news.title.toString())
-            binding.favoriteState = favSt
+//        mainViewModel.favState.observe(viewLifecycleOwner){
+//            binding.favoriteState = it
+//        }
+        mainViewModel.favState.observe(viewLifecycleOwner){
+            if (it == false)
+                binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
+            else
+                binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
         }
-
 
 
 
@@ -64,7 +68,7 @@ class DetailsFragment : Fragment() {
                 news.url,
                 news.urlToImage
             )
-
+            binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
         }
 
 
