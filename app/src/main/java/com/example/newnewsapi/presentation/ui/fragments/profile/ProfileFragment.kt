@@ -1,5 +1,6 @@
 package com.example.newnewsapi.presentation.ui.fragments.profile
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.example.newnewsapi.MainActivity
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentProfileBinding
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class ProfileFragment : Fragment() {
 
@@ -53,9 +55,16 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    fun logout() {
-        mainViewModel.logout()
-        showProgressBar()
+    fun logout(view: View) {
+        Snackbar.make(view,"Are you sure you want to log out of this account?", Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(Color.GRAY)
+            .setTextColor(Color.RED)
+            .setActionTextColor(Color.BLUE)
+            .setAction("EVET") {
+                showProgressBar()
+                mainViewModel.logout()
+            }
+
     }
 
     private fun showProgressBar() {

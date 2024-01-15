@@ -21,7 +21,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
 
@@ -51,23 +51,23 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
 
     //Data Store
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
 
     // Image Loading library Coil
-    implementation ("io.coil-kt:coil:0.13.0")
+    implementation("io.coil-kt:coil:0.13.0")
 
     //room database
-    implementation ("androidx.room:room-runtime:2.6.0")
+    implementation("androidx.room:room-runtime:2.6.0")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
-    kapt ("androidx.room:room-compiler:2.6.0")
-    implementation ("androidx.room:room-ktx:2.6.0")
-    implementation ("com.makeramen:roundedimageview:2.3.0")
+    kapt("androidx.room:room-compiler:2.6.0")
+    implementation("androidx.room:room-ktx:2.6.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -82,15 +82,17 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.13.2")
+    //circle image view
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Shimmer
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     // Coil
     implementation("io.coil-kt:coil:2.5.0")
 
     //coroutines core
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

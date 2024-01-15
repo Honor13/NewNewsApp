@@ -10,6 +10,11 @@
     <color name="shimmer_color">#C2C2C2</color>
     <color name="clikableTextColorBlue">#103DC6</color>
     <color name="clikableTextColorRed">#D62C2C</color>
+    <color name="lavender">#8692f7</color>
+    <color name="blue">#12478B</color>
+    <color name="orangered">#C64141</color>
+    <color name="yellow">#FF9A00</color>
+    <color name="green">#32E809</color>
 
 
     // Custom Chip Style
