@@ -14,8 +14,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
 import com.example.newnewsapi.data.auth.AuthRepository
 import com.example.newnewsapi.data.auth.Resource
-import com.example.newnewsapi.data.models.FavNews
+import com.example.newnewsapi.data.models.Article
 import com.example.newnewsapi.data.models.NewsResponse
+import com.example.newnewsapi.data.models.Source
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +35,7 @@ class MainViewModel @Inject constructor(
     application: Application
 ) : AndroidViewModel(application) {
     var newsApiResponse: MutableLiveData<NetworkResult<NewsResponse>> = MutableLiveData()
-    var listFav = MutableLiveData<List<FavNews>>()
+    var listFav = MutableLiveData<List<Article>>()
     var hidePrgorressBar = MutableLiveData<Boolean>(false)
     val authKey = authRepository.currentUser?.uid
     var favState = MutableLiveData<Boolean>(false)
@@ -49,13 +50,14 @@ class MainViewModel @Inject constructor(
         content: String?,
         description: String?,
         publishedAt: String?,
+        source: Source,
         title: String?,
         url: String?,
         urlToImage: String?
     ) {
 
         val newFav =
-            FavNews(favId, auth, author, content, description, publishedAt, title, url, urlToImage)
+            Article(favId, auth, author, content, description, publishedAt,source,title,url,urlToImage)
         val task = collectionFavorites.document().set(newFav)
 
         task.addOnSuccessListener {
@@ -78,6 +80,7 @@ class MainViewModel @Inject constructor(
         content: String?,
         description: String?,
         publishedAt: String?,
+        source: Source,
         title: String?,
         url: String?,
         urlToImage: String?
@@ -94,6 +97,7 @@ class MainViewModel @Inject constructor(
                         content,
                         description,
                         publishedAt,
+                        source,
                         title,
                         url,
                         urlToImage
@@ -129,16 +133,15 @@ class MainViewModel @Inject constructor(
 
     }
 
-    fun loadFavorites(): MutableLiveData<List<FavNews>> {
+    fun loadFavorites(): MutableLiveData<List<Article>> {
         collectionFavorites.addSnapshotListener { value, error ->
             if (value != null) {
-                val list = ArrayList<FavNews>()
+                val list = ArrayList<Article>()
 
                 for (d in value.documents) {
-                    val fav = d.toObject(FavNews::class.java)
+                    val fav = d.toObject(Article::class.java)
                     if (fav != null) {
-                        fav.favId = d.id
-//                        fav.favorite = true
+                        fav.id = d.id
                         if (fav.authKey == authKey) list.add(fav)
                     }
                 }

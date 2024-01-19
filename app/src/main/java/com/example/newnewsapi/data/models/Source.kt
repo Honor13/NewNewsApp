@@ -8,8 +8,8 @@ import java.io.Serializable
 data class Source(
     @SerializedName("id")
     @Expose
-    val id: String?,
+    val id: String?= "",
     @SerializedName("name")
     @Expose
-    val name: String?
+    val name: String?= ""
 ) : Serializable

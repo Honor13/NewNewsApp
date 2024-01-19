@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -32,14 +33,16 @@ class DetailsFragment : Fragment() {
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
         authKey = mainViewModel.authKey.toString()
 
-
         val bundle: DetailsFragmentArgs by navArgs()
         val news = bundle.article
         mainViewModel.checkFavorites(news.title.toString())
         binding.article = news
-//        mainViewModel.favState.observe(viewLifecycleOwner){
-//            binding.favoriteState = it
-//        }
+
+        binding.webView.apply {
+            webViewClient = WebViewClient()
+            loadUrl(news.url.toString())
+            binding.progressBarWebView.visibility=View.INVISIBLE
+        }
         mainViewModel.favState.observe(viewLifecycleOwner){
             if (it == false)
                 binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
@@ -64,6 +67,7 @@ class DetailsFragment : Fragment() {
                 news.content,
                 news.description,
                 news.publishedAt,
+                news.source!!,
                 news.title,
                 news.url,
                 news.urlToImage

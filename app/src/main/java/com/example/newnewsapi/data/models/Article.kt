@@ -6,28 +6,34 @@ import com.google.gson.annotations.Expose
 import java.io.Serializable
 
 data class Article(
+    @SerializedName("id")
+    @Expose
+    var id: String? = "",
+    @SerializedName("authKey")
+    @Expose
+    var authKey: String? = "",
     @SerializedName("author")
     @Expose
-    val author: String?,
+    var author: String? = "",
     @SerializedName("content")
     @Expose
-    val content: String?,
+    val content: String? = "",
     @SerializedName("description")
     @Expose
-    val description: String?,
+    val description: String? = "",
     @SerializedName("publishedAt")
     @Expose
-    val publishedAt: String?,
+    val publishedAt: String? = "",
     @SerializedName("source")
     @Expose
-    val source: Source?,
+    val source: Source? = null,
     @SerializedName("title")
     @Expose
-    val title: String?,
+    val title: String?= "",
     @SerializedName("url")
     @Expose
-    val url: String?,
+    val url: String?= "",
     @SerializedName("urlToImage")
     @Expose
-    val urlToImage: String?
+    val urlToImage: String?= ""
 ):Serializable

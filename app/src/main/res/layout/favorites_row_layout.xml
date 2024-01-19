@@ -5,8 +5,8 @@
 
     <data>
             <variable
-                name="favs"
-                type="com.example.newnewsapi.data.models.FavNews" />
+                name="article"
+                type="com.example.newnewsapi.data.models.Article" />
             <variable
                 name="mainViewModel"
                 type="com.example.newnewsapi.presentation.viewmodels.MainViewModel" />
@@ -14,6 +14,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutFavorites"
+        onNewsSetOnCLickListener="@{article}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
@@ -40,7 +41,7 @@
                 android:background="@color/white">
 
                 <ImageView
-                    loadImageFromUrlFav="@{favs.urlToImage}"
+                    loadImageFromUrlFav="@{article.urlToImage}"
                     android:id="@+id/newsImageView2"
                     android:layout_width="150dp"
                     android:layout_height="160dp"
@@ -59,7 +60,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/courier_prime"
                     android:maxLines="2"
-                    android:text="@{favs.title}"
+                    android:text="@{article.title}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
-                    android:text="@{favs.description}"
+                    android:text="@{article.description}"
                     android:maxLines="3"
                     android:textColor="@color/darkGray"
                     app:layout_constraintEnd_toEndOf="@+id/textView22"
