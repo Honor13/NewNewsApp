@@ -18,7 +18,7 @@ class Constants {
         const val PREFERENCES_NAME = "news_preferences"
         const val PREFERENCES_CATEGORY = "categoryType"
         const val PREFERENCES_CATEGORY_ID = "categoryTypeId"
-
+        const val PREFERENCES_BACK_ONLINE = "backOnline"
 
     }
 }

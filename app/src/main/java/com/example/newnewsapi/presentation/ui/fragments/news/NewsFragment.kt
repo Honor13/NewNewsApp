@@ -1,6 +1,7 @@
 package com.example.newnewsapi.presentation.ui.fragments.news
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newnewsapi.R
@@ -15,8 +17,10 @@ import com.example.newnewsapi.databinding.FragmentNewsBinding
 import com.example.newnewsapi.presentation.ui.adapters.NewsAdapter
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 import com.example.newnewsapi.presentation.viewmodels.NewsViewModel
+import com.example.newnewsapi.util.NetworkListener
 import com.example.newnewsapi.util.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -27,7 +31,9 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
     private val mAdapter by lazy { NewsAdapter() }
 
-    //    private val args by navArgs<NewsFragmentArgs>()
+    private lateinit var networkListener: NetworkListener
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,9 +42,29 @@ class NewsFragment : Fragment() {
 
         setupRV()
         requesApiData()
+        newsViewModel.readBackOnline.observe(viewLifecycleOwner){
+            newsViewModel.backOnline = it
+        }
+
+        lifecycleScope.launch {
+            networkListener = NetworkListener()
+            networkListener.checkNetworkAvailability(requireContext())
+                .collect { status ->
+                    Log.d("NetworkListener", status.toString())
+                    newsViewModel.networkStatus = status
+                    newsViewModel.showNetworkStatus()
+
+                }
+        }
 
         binding.fabCategory.setOnClickListener() {
-            findNavController().navigate(R.id.action_bottomNavHolderFragment_to_newsBottomSheet)
+            if (newsViewModel.networkStatus) {
+                findNavController().navigate(R.id.action_bottomNavHolderFragment_to_newsBottomSheet)
+            } else {
+
+                newsViewModel.showNetworkStatus()
+            }
+
         }
 
         return binding.root

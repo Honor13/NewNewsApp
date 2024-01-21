@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NewtorkModule {
 
-    // FIREBASE DEPENDENCY
+    // FIREBASE DEPENDENCYS
     // Firestore
     @Singleton
     @Provides
