@@ -6,17 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
-import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentDetailsBinding
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
 
@@ -24,11 +19,13 @@ class DetailsFragment : Fragment() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var authKey: String
 
+    private var isNewsSaved = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
         authKey = mainViewModel.authKey.toString()
@@ -43,7 +40,8 @@ class DetailsFragment : Fragment() {
             loadUrl(news.url.toString())
             binding.progressBarWebView.visibility=View.INVISIBLE
         }
-        mainViewModel.favState.observe(viewLifecycleOwner){
+        mainViewModel.isFavState.observe(viewLifecycleOwner){
+            isNewsSaved = it
             if (it == false)
                 binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
             else
@@ -59,20 +57,30 @@ class DetailsFragment : Fragment() {
 
         binding.imageViewFav.setOnClickListener {
             showProgressBar()
-            mainViewModel.checkIfNewsExistsAndSaveFavorites(
-                it,
-                "",
-                authKey,
-                news.author,
-                news.content,
-                news.description,
-                news.publishedAt,
-                news.source!!,
-                news.title,
-                news.url,
-                news.urlToImage
-            )
-            binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
+            if (!isNewsSaved) {
+                mainViewModel.checkIfNewsExistsAndSaveFavorites(
+                    it,
+                    "",
+                    authKey,
+                    news.author,
+                    news.content,
+                    news.description,
+                    news.publishedAt,
+                    news.source!!,
+                    news.title,
+                    news.url,
+                    news.urlToImage
+                )
+                binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
+            }
+            else {
+                mainViewModel.deleteFavorites(news,it)
+                binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
+                hideProgressBar(true)
+                isNewsSaved=false
+            }
+
+
         }
 
 

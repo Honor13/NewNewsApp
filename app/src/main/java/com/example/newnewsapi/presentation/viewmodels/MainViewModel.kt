@@ -23,7 +23,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -38,7 +41,7 @@ class MainViewModel @Inject constructor(
     var listFav = MutableLiveData<List<Article>>()
     var hidePrgorressBar = MutableLiveData<Boolean>(false)
     val authKey = authRepository.currentUser?.uid
-    var favState = MutableLiveData<Boolean>(false)
+    var isFavState = MutableLiveData<Boolean>(false)
 
     // FIREBASE
     // Firebase Firestore
@@ -63,6 +66,7 @@ class MainViewModel @Inject constructor(
         task.addOnSuccessListener {
             Snackbar.make(view, "News added to favorites", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.GREEN).setTextColor(Color.BLACK).show()
+            isFavState.value = true
             hidePrgorressBar.value = true
         }.addOnFailureListener {
             Snackbar.make(view, "A Problem Has Occured", Snackbar.LENGTH_SHORT)
@@ -108,6 +112,7 @@ class MainViewModel @Inject constructor(
                         view, "This news is already in favorites", Snackbar.LENGTH_SHORT
                     ).setBackgroundTint(Color.YELLOW).setTextColor(Color.BLACK).show()
                     hidePrgorressBar.value = true
+                    isFavState.value = true
                 }
                 hidePrgorressBar.value = false
             }.addOnFailureListener {
@@ -124,9 +129,9 @@ class MainViewModel @Inject constructor(
         collectionFavorites.whereEqualTo("title", title).get()
             .addOnSuccessListener { querySnapshot ->
                 if (querySnapshot.isEmpty) {
-                    favState.value = false
+                    isFavState.value = false
                 } else {
-                    favState.value = true
+                    isFavState.value = true
                 }
 
             }
@@ -141,7 +146,6 @@ class MainViewModel @Inject constructor(
                 for (d in value.documents) {
                     val fav = d.toObject(Article::class.java)
                     if (fav != null) {
-                        fav.id = d.id
                         if (fav.authKey == authKey) list.add(fav)
                     }
                 }
@@ -151,22 +155,33 @@ class MainViewModel @Inject constructor(
         return listFav
     }
 
-    fun deleteFavorites(favId: String, view: View) {
+    fun deleteFavorites(favorites: Article, view: View)= CoroutineScope(Dispatchers.IO).launch {
 
-        Snackbar.make(view, "Are you sure you want to delete it?", Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(Color.GRAY)
-            .setTextColor(Color.BLUE)
-            .setActionTextColor(Color.RED)
-            .setAction("EVET") {
-                val task = collectionFavorites.document(favId)
-                task.delete().addOnSuccessListener {
-                    Snackbar.make(
-                        view, "Deleted", Snackbar.LENGTH_SHORT
-                    ).setBackgroundTint(Color.RED).setTextColor(Color.BLACK).show()
-                }.addOnFailureListener {
-                    Log.e("Dante", "could not be Deleted")
+        val newsQuery = collectionFavorites
+            .whereEqualTo("title", favorites.title)
+            .whereEqualTo("content",favorites.content)
+            .get()
+            .await()
+        if (newsQuery.documents.isNotEmpty()){
+            for (document in newsQuery){
+                try {
+                    collectionFavorites.document(document.id).delete().await()
+                    //collectionFavorites.document(document.id).update(mapOf(
+                      //  "title" to FieldValue.delete()
+                    //))
+                    isFavState.value = false
+
+                }catch (e: Exception){
+
+                    Snackbar.make(view, "Deleted", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(Color.RED)
+                        .setTextColor(Color.BLUE)
+                        .show()
                 }
-            }.show()
+            }
+
+        }
+
 
 
     }

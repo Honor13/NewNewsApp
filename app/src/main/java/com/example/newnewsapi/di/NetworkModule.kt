@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NewtorkModule {
+object NetworkModule {
 
     // FIREBASE DEPENDENCYS
     // Firestore

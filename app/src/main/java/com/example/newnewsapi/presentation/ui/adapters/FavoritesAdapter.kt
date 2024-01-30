@@ -21,7 +21,7 @@ class FavoritesAdapter(var mainViewModel: MainViewModel) :
             binding.article = article
 
             binding.imageView33.setOnClickListener {
-                mainViewModel.deleteFavorites(article.id.toString(), binding.imageView33)
+                mainViewModel.deleteFavorites(article, binding.imageView33)
             }
 
             binding.executePendingBindings()
