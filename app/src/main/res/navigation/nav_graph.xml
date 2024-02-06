@@ -65,7 +65,9 @@
             android:defaultValue="false" />
         <action
             android:id="@+id/action_bottomNavHolderFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_bottomNavHolderFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />

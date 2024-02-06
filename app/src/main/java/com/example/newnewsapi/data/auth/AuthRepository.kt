@@ -1,10 +1,12 @@
-package com.example.newnewsapi.data.auth
+package com.example.auth.data.repository
 
-import com.google.firebase.auth.FirebaseUser
+import com.example.firebasewithmvvm.util.UiState
 
 interface AuthRepository {
-    val currentUser: FirebaseUser?
-    suspend fun login(email: String, password: String): Resource<FirebaseUser>
-    suspend fun signup(name: String, email: String, password: String): Resource<FirebaseUser>
-    fun logout()
+
+    fun login(email: String, password: String, result: (UiState<String>) -> Unit)
+    fun registerUser(name: String, email: String, password: String, result: (UiState<String>) -> Unit)
+    fun forgotPassword(email: String, result: (UiState<String>) -> Unit)
+    fun logout(result: () -> Unit)
+
 }

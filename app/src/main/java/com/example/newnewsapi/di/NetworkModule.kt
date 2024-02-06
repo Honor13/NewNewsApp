@@ -2,8 +2,8 @@ package com.example.newnewsapi.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.newnewsapi.data.auth.AuthRepository
-import com.example.newnewsapi.data.auth.AuthRepositoryImpl
+import com.example.auth.data.repository.AuthRepository
+import com.example.auth.data.repository.AuthRepositoryImpl
 import com.example.newnewsapi.data.network.NewsApi
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.Constants.Companion.BASE_URL
@@ -43,9 +43,24 @@ object NetworkModule {
     }
 
     @Provides
-    fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository {
-        return impl
+    @Singleton
+    fun provideAuthRepository(
+        auth: FirebaseAuth,
+        appPref: SharedPreferences
+
+    ): AuthRepository {
+        return AuthRepositoryImpl(auth,appPref)
     }
+
+    @Provides
+    @Singleton
+    fun provideSharedPref(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(
+            Constants.SHARED_PREF_FILE_NAME,
+            Context.MODE_PRIVATE)
+    }
+
+
 
 //    @Provides
 //    fun providesSharedPref(@ApplicationContext context: Context): SharedPreferences {

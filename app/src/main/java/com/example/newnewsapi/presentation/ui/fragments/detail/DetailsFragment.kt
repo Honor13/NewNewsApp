@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentDetailsBinding
+import com.example.newnewsapi.presentation.viewmodels.AuthViewModel
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailsBinding
     private lateinit var mainViewModel: MainViewModel
+    private val authViewModel: AuthViewModel by viewModels()
     private lateinit var authKey: String
 
     private var isNewsSaved = false
@@ -28,7 +33,7 @@ class DetailsFragment : Fragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
-        authKey = mainViewModel.authKey.toString()
+        authKey = authViewModel.isLoginAuthVM.value.toString()
 
         val bundle: DetailsFragmentArgs by navArgs()
         val news = bundle.article

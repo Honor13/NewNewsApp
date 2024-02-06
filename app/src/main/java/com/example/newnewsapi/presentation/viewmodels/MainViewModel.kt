@@ -2,7 +2,6 @@ package com.example.newnewsapi.presentation.viewmodels
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -13,8 +12,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
-import com.example.newnewsapi.data.auth.AuthRepository
-import com.example.newnewsapi.data.auth.Resource
 import com.example.newnewsapi.data.models.Article
 import com.example.newnewsapi.data.models.NewsResponse
 import com.example.newnewsapi.data.models.Source
@@ -35,13 +32,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val repository: Repository,
     private val collectionFavorites: CollectionReference,
-    private val authRepository: AuthRepository,
+
     application: Application
 ) : AndroidViewModel(application) {
     var newsApiResponse: MutableLiveData<NetworkResult<NewsResponse>> = MutableLiveData()
     var listFav = MutableLiveData<List<Article>>()
     var hidePrgorressBar = MutableLiveData<Boolean>(false)
-    val authKey = authRepository.currentUser?.uid
     var isFavState = MutableLiveData<Boolean>(false)
 
     // FIREBASE
@@ -186,34 +182,6 @@ class MainViewModel @Inject constructor(
 
     //////////////////
     //Firebase Authentication
-
-    private val _loginLiveData = MutableLiveData<Resource<FirebaseUser>?>(null)
-    val loginLiveData: LiveData<Resource<FirebaseUser>?> = _loginLiveData
-
-    private val _signupLiveData = MutableLiveData<Resource<FirebaseUser>?>(null)
-    val signupLiveData: LiveData<Resource<FirebaseUser>?> = _signupLiveData
-
-    val currentUser: FirebaseUser?
-        get() = authRepository.currentUser
-
-    fun loginUser(email: String, password: String) = viewModelScope.launch {
-        _loginLiveData.value = Resource.Loading
-        val result = authRepository.login(email, password)
-        _loginLiveData.value = result
-    }
-
-
-
-    fun signupUser(name: String, email: String, password: String) = viewModelScope.launch {
-        _signupLiveData.value = Resource.Loading
-        val result = authRepository.signup(name, email, password)
-        _signupLiveData.value = result
-    }
-
-    fun logout() {
-        authRepository.logout()
-
-    }
 
     ////////////////////////
     //////////////////////////////////////

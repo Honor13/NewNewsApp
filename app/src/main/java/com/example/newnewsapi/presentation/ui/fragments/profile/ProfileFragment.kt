@@ -1,71 +1,47 @@
 package com.example.newnewsapi.presentation.ui.fragments.profile
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import com.example.newnewsapi.MainActivity
 import com.example.newnewsapi.R
 import com.example.newnewsapi.databinding.FragmentProfileBinding
+import com.example.newnewsapi.presentation.viewmodels.AuthViewModel
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
-import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var binding: FragmentProfileBinding
     private lateinit var view: View
+    private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_profile, container, false)
         binding.profileFragmentObject = this
         view = binding.progressBarProfile
+        authViewModel.loginState()
 
-        mainViewModel.loginLiveData.observe(viewLifecycleOwner) {
-            if (it == null) {
-                hideProgressBar()
-                val mainNavController =
-                    (requireActivity() as MainActivity).findNavController(R.id.navHostFragment)
-
-                // popUpTo kullanarak back stack temizleme işlemi
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.bottomNavHolderFragment, true)
-                    .build()
-
-                mainNavController.navigate(
-                    R.id.action_bottomNavHolderFragment_to_loginFragment,
-                    null,
-                    navOptions
-                )
+        binding.imgToolbarBtnBackLogout.setOnClickListener{
+            authViewModel.logOut {
+                Navigation.findNavController(view).navigate(R.id.action_bottomNavHolderFragment_to_loginFragment)
             }
         }
-
 
         return binding.root
     }
 
-    fun logout(view: View) {
-        Snackbar.make(view,"Are you sure you want to log out of this account?", Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(Color.GRAY)
-            .setTextColor(Color.RED)
-            .setActionTextColor(Color.BLUE)
-            .setAction("EVET") {
-                showProgressBar()
-                mainViewModel.logout()
-            }.show()
 
-    }
 
     private fun showProgressBar() {
         binding.progressBarProfile.visibility = View.VISIBLE

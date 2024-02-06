@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.newnewsapi.R
-import com.example.newnewsapi.data.auth.Resource
 import com.example.newnewsapi.databinding.FragmentRegisterBinding
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,31 +29,7 @@ class RegisterFragment : Fragment() {
         binding.registerFragmentObject = this
         view = binding.buttonSignUp
 
-        mainViewModel.signupLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                is Resource.Failure -> {
-                    hideProgressBar()
-                    Toast.makeText(
-                        requireContext(),
-                        it.exception.message.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
 
-                Resource.Loading -> {
-                    showProgressBar()
-                }
-
-                is Resource.Success -> {
-                    Navigation.findNavController(view)
-                        .navigate(R.id.action_registerFragment_to_bottomNavHolderFragment)
-                }
-
-                null -> {
-
-                }
-            }
-        }
 
 
         return binding.root
@@ -67,17 +42,6 @@ class RegisterFragment : Fragment() {
 
     }
 
-    fun signUp(username: String, email: String, password1: String, password2: String) {
-        showProgressBar()
-        if (password1 == password2)
-            mainViewModel.signupUser(username, email, password1)
-        else {
-            Toast.makeText(requireContext(), "Passwords do not match", Toast.LENGTH_SHORT).show()
-            hideProgressBar()
-        }
-
-
-    }
 
     private fun showProgressBar() {
         binding.progressBarRegisterScreen.visibility = View.VISIBLE

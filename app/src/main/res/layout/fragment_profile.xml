@@ -48,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginEnd="16dp"
-                    android:onClick="@{()->profileFragmentObject.logout(imgToolbarBtnBackLogout)}"
                     android:background="@color/white"
                     android:src="@drawable/ic_right"
                     app:layout_constraintBottom_toBottomOf="@+id/circleImageViewLogout"
