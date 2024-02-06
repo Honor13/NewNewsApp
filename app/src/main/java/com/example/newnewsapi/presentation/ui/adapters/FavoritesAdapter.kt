@@ -10,18 +10,19 @@ import com.example.newnewsapi.presentation.viewmodels.MainViewModel
 import com.example.newnewsapi.util.NewsDiffUtil
 
 
-class FavoritesAdapter(var mainViewModel: MainViewModel) :
+class FavoritesAdapter(private val onItemClickListener: (Article) -> Unit) :
     RecyclerView.Adapter<FavoritesAdapter.MyViewHolder>() {
 
     private var favNews = emptyList<Article>()
 
-    class MyViewHolder(private val binding: FavoritesRowLayoutBinding) :
+     class MyViewHolder(private val binding: FavoritesRowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(article: Article, mainViewModel: MainViewModel) {
+        fun bind(article: Article,onItemClickListener: (Article) -> Unit) {
             binding.article = article
 
             binding.imageView33.setOnClickListener {
-                mainViewModel.deleteFavorites(article, binding.imageView33)
+//                mainViewModel.deleteFavorites(article, binding.imageView33)
+                onItemClickListener.invoke(article)
             }
 
             binding.executePendingBindings()
@@ -47,7 +48,7 @@ class FavoritesAdapter(var mainViewModel: MainViewModel) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentfavNews = favNews[position]
-        holder.bind(currentfavNews, mainViewModel)
+        holder.bind(currentfavNews, onItemClickListener)
     }
 
     fun setData(newData: List<Article>) {

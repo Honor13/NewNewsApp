@@ -74,7 +74,7 @@ class DetailsFragment : Fragment() {
                 binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
             }
             else {
-                mainViewModel.deleteFavorites(news,it)
+                mainViewModel.deleteFavorites(news)
                 binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
                 hideProgressBar(true)
                 isNewsSaved=false

@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
 import com.example.newnewsapi.R
 import com.example.newnewsapi.data.auth.Resource
 import com.example.newnewsapi.databinding.FragmentRegisterBinding
@@ -31,7 +30,7 @@ class RegisterFragment : Fragment() {
         binding.registerFragmentObject = this
         view = binding.buttonSignUp
 
-        mainViewModel.signupFlow.observe(viewLifecycleOwner) {
+        mainViewModel.signupLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Failure -> {
                     hideProgressBar()

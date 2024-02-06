@@ -20,5 +20,9 @@ class Constants {
         const val PREFERENCES_CATEGORY_ID = "categoryTypeId"
         const val PREFERENCES_BACK_ONLINE = "backOnline"
 
+        // login state shared pref
+        val SHARED_PREF_FILE_NAME = "loginInformation"
+        val AUTH_STATE_KEY = "authStateKey"
+
     }
 }

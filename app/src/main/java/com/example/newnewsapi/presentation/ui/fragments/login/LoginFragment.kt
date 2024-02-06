@@ -1,7 +1,6 @@
 package com.example.newnewsapi.presentation.ui.fragments.login
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,21 +9,14 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.example.newnewsapi.R
 import com.example.newnewsapi.data.auth.Resource
 import com.example.newnewsapi.databinding.FragmentLoginBinding
 import com.example.newnewsapi.presentation.viewmodels.MainViewModel
-import com.google.android.material.progressindicator.CircularProgressIndicator
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.lang.reflect.Modifier
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -32,18 +24,19 @@ class LoginFragment : Fragment() {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var view: View
+    private lateinit var mAuthStateListener: FirebaseAuth.AuthStateListener
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_login, container, false)
         binding.loginFragmentObject = this
         view = binding.buttonLogin
+        initMyAuthStateListener()
 
-
-        mainViewModel.loginFlow.observe(viewLifecycleOwner) {
+        mainViewModel.loginLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is Resource.Failure -> {
                     hideProgressBar()
@@ -82,6 +75,18 @@ class LoginFragment : Fragment() {
         mainViewModel.loginUser(email, password)
     }
 
+    private fun initMyAuthStateListener() {
+
+        mAuthStateListener = FirebaseAuth.AuthStateListener { p0 ->
+            var user = p0.currentUser
+            if (user != null){
+                Navigation.findNavController(view)
+                    .navigate(R.id.action_loginFragment_to_bottomNavHolderFragment)
+            }
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -94,5 +99,15 @@ class LoginFragment : Fragment() {
     private fun hideProgressBar() {
         binding.progressBar.visibility = View.INVISIBLE
     }
+
+    override fun onStart() {
+        super.onStart()
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener)
+    }
+
+//    override fun onStop() {
+//        super.onStop()
+//        FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener)
+//    }
 
 }

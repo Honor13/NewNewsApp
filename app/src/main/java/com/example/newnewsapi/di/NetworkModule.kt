@@ -1,8 +1,11 @@
 package com.example.newnewsapi.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.newnewsapi.data.auth.AuthRepository
 import com.example.newnewsapi.data.auth.AuthRepositoryImpl
 import com.example.newnewsapi.data.network.NewsApi
+import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.Constants.Companion.BASE_URL
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
@@ -11,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -42,6 +46,14 @@ object NetworkModule {
     fun providesAuthRepository(impl: AuthRepositoryImpl): AuthRepository {
         return impl
     }
+
+//    @Provides
+//    fun providesSharedPref(@ApplicationContext context: Context): SharedPreferences {
+//        return context.getSharedPreferences(
+//            Constants.SHARED_PREF_FILE_NAME,
+//            Context.MODE_PRIVATE
+//        )
+//    }
 
     ///////////////////////////////////////
 /////////////////////////////////////////////////////////

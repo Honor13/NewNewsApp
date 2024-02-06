@@ -32,7 +32,7 @@ class ProfileFragment : Fragment() {
         binding.profileFragmentObject = this
         view = binding.progressBarProfile
 
-        mainViewModel.loginFlow.observe(viewLifecycleOwner) {
+        mainViewModel.loginLiveData.observe(viewLifecycleOwner) {
             if (it == null) {
                 hideProgressBar()
                 val mainNavController =

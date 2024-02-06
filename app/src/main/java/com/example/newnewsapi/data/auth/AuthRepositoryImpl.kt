@@ -1,5 +1,6 @@
 package com.example.newnewsapi.data.auth
 
+import android.content.SharedPreferences
 import com.example.newnewsapi.util.await
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,6 +17,8 @@ class AuthRepositoryImpl @Inject constructor(
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             Resource.Success(result.user!!)
+
+
         } catch (e: Exception) {
             e.printStackTrace()
             Resource.Failure(e)

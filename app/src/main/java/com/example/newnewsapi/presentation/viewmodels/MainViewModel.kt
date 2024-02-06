@@ -2,6 +2,7 @@ package com.example.newnewsapi.presentation.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -146,7 +147,7 @@ class MainViewModel @Inject constructor(
                 for (d in value.documents) {
                     val fav = d.toObject(Article::class.java)
                     if (fav != null) {
-                        if (fav.authKey == authKey) list.add(fav)
+                        list.add(fav)
                     }
                 }
                 listFav.value = list
@@ -155,7 +156,7 @@ class MainViewModel @Inject constructor(
         return listFav
     }
 
-    fun deleteFavorites(favorites: Article, view: View)= CoroutineScope(Dispatchers.IO).launch {
+    fun deleteFavorites(favorites: Article)= CoroutineScope(Dispatchers.IO).launch {
 
         val newsQuery = collectionFavorites
             .whereEqualTo("title", favorites.title)
@@ -173,10 +174,7 @@ class MainViewModel @Inject constructor(
 
                 }catch (e: Exception){
 
-                    Snackbar.make(view, "Deleted", Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(Color.RED)
-                        .setTextColor(Color.BLUE)
-                        .show()
+
                 }
             }
 
@@ -189,31 +187,32 @@ class MainViewModel @Inject constructor(
     //////////////////
     //Firebase Authentication
 
-    private val _loginFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
-    val loginFlow: LiveData<Resource<FirebaseUser>?> = _loginFlow
+    private val _loginLiveData = MutableLiveData<Resource<FirebaseUser>?>(null)
+    val loginLiveData: LiveData<Resource<FirebaseUser>?> = _loginLiveData
 
-    private val _signupFlow = MutableLiveData<Resource<FirebaseUser>?>(null)
-    val signupFlow: LiveData<Resource<FirebaseUser>?> = _signupFlow
+    private val _signupLiveData = MutableLiveData<Resource<FirebaseUser>?>(null)
+    val signupLiveData: LiveData<Resource<FirebaseUser>?> = _signupLiveData
 
     val currentUser: FirebaseUser?
         get() = authRepository.currentUser
 
     fun loginUser(email: String, password: String) = viewModelScope.launch {
-        _loginFlow.value = Resource.Loading
+        _loginLiveData.value = Resource.Loading
         val result = authRepository.login(email, password)
-        _loginFlow.value = result
+        _loginLiveData.value = result
     }
 
+
+
     fun signupUser(name: String, email: String, password: String) = viewModelScope.launch {
-        _signupFlow.value = Resource.Loading
+        _signupLiveData.value = Resource.Loading
         val result = authRepository.signup(name, email, password)
-        _signupFlow.value = result
+        _signupLiveData.value = result
     }
 
     fun logout() {
         authRepository.logout()
-        _loginFlow.value = null
-        _signupFlow.value = null
+
     }
 
     ////////////////////////

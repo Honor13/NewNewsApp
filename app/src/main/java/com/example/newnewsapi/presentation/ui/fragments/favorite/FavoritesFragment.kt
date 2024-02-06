@@ -18,7 +18,8 @@ class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
     private lateinit var mainViewModel: MainViewModel
-    private val mAdapter by lazy { FavoritesAdapter(mainViewModel) }
+    private lateinit var adapter: FavoritesAdapter
+//    private val mAdapter by lazy { FavoritesAdapter() }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,10 +28,17 @@ class FavoritesFragment : Fragment() {
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_favorites, container, false)
 
         showShimmer()
-        setupRV()
+
         mainViewModel.loadFavorites()
+        adapter = FavoritesAdapter(onItemClickListener = {
+            mainViewModel.deleteFavorites(it)
+        })
+
+
+
+        setupRV()
         mainViewModel.listFav.observe(viewLifecycleOwner) {
-            mAdapter.setData(it)
+            adapter.setData(it)
             hideShimmer()
         }
 
@@ -45,7 +53,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setupRV() {
-        binding.recyclerViewFavorites.adapter = mAdapter
+        binding.recyclerViewFavorites.adapter = adapter
         binding.recyclerViewFavorites.layoutManager = LinearLayoutManager(requireContext())
         showShimmer()
     }
