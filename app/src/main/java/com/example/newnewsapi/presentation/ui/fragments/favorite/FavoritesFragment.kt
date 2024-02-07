@@ -31,7 +31,7 @@ class FavoritesFragment : Fragment() {
 
         mainViewModel.loadFavorites()
         adapter = FavoritesAdapter(onItemClickListener = {
-            mainViewModel.deleteFavorites(it)
+            mainViewModel.deleteFavorites(it,binding.errorImageView11)
         })
 
 

@@ -8,7 +8,6 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.newnewsapi.data.Repository
@@ -18,7 +17,6 @@ import com.example.newnewsapi.data.models.Source
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.NetworkResult
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -57,12 +55,24 @@ class MainViewModel @Inject constructor(
     ) {
 
         val newFav =
-            Article(favId, auth, author, content, description, publishedAt,source,title,url,urlToImage)
+            Article(
+                favId,
+                auth,
+                author,
+                content,
+                description,
+                publishedAt,
+                source,
+                title,
+                url,
+                urlToImage
+            )
         val task = collectionFavorites.document().set(newFav)
 
         task.addOnSuccessListener {
             Snackbar.make(view, "News added to favorites", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.GREEN).setTextColor(Color.BLACK).show()
+
             isFavState.value = true
             hidePrgorressBar.value = true
         }.addOnFailureListener {
@@ -105,18 +115,14 @@ class MainViewModel @Inject constructor(
                     )
                 } else {
                     // Başlık varsa kullanıcıyı bilgilendir
-                    Snackbar.make(
-                        view, "This news is already in favorites", Snackbar.LENGTH_SHORT
-                    ).setBackgroundTint(Color.YELLOW).setTextColor(Color.BLACK).show()
+
                     hidePrgorressBar.value = true
                     isFavState.value = true
                 }
                 hidePrgorressBar.value = false
             }.addOnFailureListener {
                 // Hata durumunda kullanıcıyı bilgilendir
-                Snackbar.make(
-                    view, "Error checking for existing news", Snackbar.LENGTH_SHORT
-                ).setBackgroundTint(Color.RED).setTextColor(Color.BLACK).show()
+//                showSnackBar(view,it.message.toString(),false)
                 hidePrgorressBar.value = true
             }
         hidePrgorressBar.value = false
@@ -152,30 +158,33 @@ class MainViewModel @Inject constructor(
         return listFav
     }
 
-    fun deleteFavorites(favorites: Article)= CoroutineScope(Dispatchers.IO).launch {
+    fun deleteFavorites(favorites: Article, view: View) = CoroutineScope(Dispatchers.IO).launch {
 
         val newsQuery = collectionFavorites
             .whereEqualTo("title", favorites.title)
-            .whereEqualTo("content",favorites.content)
+            .whereEqualTo("content", favorites.content)
             .get()
             .await()
-        if (newsQuery.documents.isNotEmpty()){
-            for (document in newsQuery){
+        if (newsQuery.documents.isNotEmpty()) {
+
+            for (document in newsQuery) {
                 try {
                     collectionFavorites.document(document.id).delete().await()
                     //collectionFavorites.document(document.id).update(mapOf(
-                      //  "title" to FieldValue.delete()
+                    //  "title" to FieldValue.delete()
                     //))
+                    Snackbar.make(view, "Deleted", Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(Color.RED).setTextColor(Color.BLACK).show()
                     isFavState.value = false
 
-                }catch (e: Exception){
+
+                } catch (e: Exception) {
 
 
                 }
             }
 
         }
-
 
 
     }

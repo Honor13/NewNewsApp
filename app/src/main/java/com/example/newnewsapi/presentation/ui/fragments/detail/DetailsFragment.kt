@@ -24,6 +24,7 @@ class DetailsFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()
     private lateinit var authKey: String
 
+
     private var isNewsSaved = false
 
 
@@ -34,6 +35,7 @@ class DetailsFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_details, container, false)
         authKey = authViewModel.isLoginAuthVM.value.toString()
+
 
         val bundle: DetailsFragmentArgs by navArgs()
         val news = bundle.article
@@ -79,10 +81,11 @@ class DetailsFragment : Fragment() {
                 binding.imageViewFav.setImageResource(R.drawable.ic_fill_fav)
             }
             else {
-                mainViewModel.deleteFavorites(news)
+                mainViewModel.deleteFavorites(news,binding.progressBarWebView)
                 binding.imageViewFav.setImageResource(R.drawable.ic_unfill_fav)
                 hideProgressBar(true)
                 isNewsSaved=false
+
             }
 
 
@@ -108,5 +111,6 @@ class DetailsFragment : Fragment() {
         }
 
     }
+
 
 }
