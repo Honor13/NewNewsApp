@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.newnewsapi.data.CategoryType
 import com.example.newnewsapi.data.DataStoreRepository
 import com.example.newnewsapi.util.Constants
 import com.example.newnewsapi.util.Constants.Companion.DEFAULT_CATEGORY_TYPE
@@ -28,6 +27,10 @@ class NewsViewModel @Inject constructor(
     val readCategoryType = dataStoreRepository.readCategoryType
     val readBackOnline = dataStoreRepository.readBackOnline.asLiveData()
 
+    init {
+        readCategory()
+    }
+
     fun saveCategory(categoryType: String, categoryTypeId: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveCategory(categoryType, categoryTypeId)
@@ -37,6 +40,14 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveBackOnline(backOnline)
         }
+
+    fun readCategory(){
+        viewModelScope.launch {
+            readCategoryType.collect {
+                categoryType = it.selectedCategoryType
+            }
+        }
+    }
 
     fun applyQueries(): HashMap<String, String> {
         val queries: HashMap<String, String> = HashMap()

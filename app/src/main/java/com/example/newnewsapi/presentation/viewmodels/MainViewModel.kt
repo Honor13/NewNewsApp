@@ -216,6 +216,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
+
+
     private fun handleNewsResponse(response: Response<NewsResponse>): NetworkResult<NewsResponse>? {
         newsApiResponse.value = NetworkResult.Loading()
         when {
